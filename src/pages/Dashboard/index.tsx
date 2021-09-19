@@ -5,7 +5,7 @@ import { Container, Title } from "./styles";
 export const Dashboard = () => {
 	return (
 		<Container>
-			<Title>Text</Title>
+			<Title>Dashboard</Title>
 		</Container>
 	);
 };
