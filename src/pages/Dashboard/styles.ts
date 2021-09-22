@@ -8,13 +8,13 @@ export const Container = styled.View`
 	background: ${({ theme }) => theme.colors.background};
 `;
 
-export const Header = styled.View`
+export const Header = styled.SafeAreaView`
 	width: 100%;
 	height: ${RFPercentage(42)}px;
-
+	padding-top: 40px;
 	background: ${({ theme }) => theme.colors.primary};
 	justify-content: center;
-	align-items: center;
+	align-items: flex-start;
 	flex-direction: row;
 `;
 export const UserContainer = styled.View`
@@ -48,4 +48,26 @@ export const UserName = styled.Text`
 export const PowerButton = styled(Feather)`
 	color: ${({ theme }) => theme.colors.secondary};
 	font-size: ${RFValue(30)}px;
+`;
+
+export const HighlightCards = styled.ScrollView.attrs({
+	horizontal: true,
+	showsHorizontalScrollIndicator: false,
+	contentContainerStyle: { paddingLeft: 24 },
+})`
+	width: 100%;
+	position: absolute;
+	margin-top: ${RFPercentage(20)}px;
+`;
+
+export const Transactions = styled.View`
+	flex: 1;
+	padding: 0 24px;
+
+	margin-top: ${RFPercentage(12)}px;
+`;
+export const Title = styled.Text`
+	font-size: ${RFValue(18)}px;
+	font-family: ${({ theme }) => theme.fonts.regular};
+	margin-bottom: 16px;
 `;
