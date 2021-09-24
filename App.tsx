@@ -15,6 +15,7 @@ import theme from "./src/global/styles/theme";
 
 import { Dashboard } from "./src/pages/Dashboard";
 import { StatusBar } from "expo-status-bar";
+import { Register } from "./src/pages/Register";
 
 export default function App() {
 	const [fonstLoaded] = useFonts({
@@ -29,7 +30,8 @@ export default function App() {
 	return (
 		<ThemeProvider theme={theme}>
 			<StatusBar backgroundColor={theme.colors.primary} style="light" />
-			<Dashboard />
+			{/* <Dashboard /> */}
+			<Register />
 		</ThemeProvider>
 	);
 }
