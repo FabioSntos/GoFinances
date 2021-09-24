@@ -6,15 +6,15 @@ export default {
 		secondaryLight: "rgba(255, 135, 44, 0.3)",
 
 		success: "#12A454",
-		successLight: "rgba(18, 164, 84 , 0.5)",
+		successLight: "rgba(18, 164, 84 , 0.3)",
 
 		attention: "#E83F5B",
-		attentionLight: "rgba(232, 63, 91, 0.5)",
+		attentionLight: "rgba(232, 63, 91, 0.3)",
 
 		shape: "#FFF",
 
 		title: "#363F5F",
-		text: "#969CB2",
+		text: "#969CB3",
 		textDark: "#000000",
 		background: "#F0F2F5",
 	},
