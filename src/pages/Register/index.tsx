@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { Keyboard, Modal, TouchableWithoutFeedback, Alert } from "react-native";
 
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { Button } from "../../components/Forms/Button";
 import { CategorySelectButton } from "../../components/Forms/CategorySelectButton";
@@ -39,6 +40,8 @@ const schema = Yup.object()
 	.defined();
 
 export const Register = () => {
+	const dataKey = "@gofinances:transactions";
+
 	const [transactionType, setTransactionType] = useState("up");
 	const [categoryModalOpen, setCategoryModalOpen] = useState(false);
 	const [category, setCategory] = useState({
@@ -59,14 +62,11 @@ export const Register = () => {
 	function handleSelectCategoryModal() {
 		setCategoryModalOpen(!categoryModalOpen);
 	}
-	function handleSubmitTransaction(form: FormData) {
-		if (
-			!transactionType ||
-			category.key === "category" ||
-			form.amount ||
-			form.name
-		)
+
+	async function handleSubmitTransaction(form: FormData) {
+		if (!transactionType || category.key === "category") {
 			return Alert.alert("Preencha todos os campos");
+		}
 
 		const data = {
 			name: form.name,
@@ -74,8 +74,20 @@ export const Register = () => {
 			transactionType,
 			category: category.key,
 		};
-		console.log(data);
+		try {
+			await AsyncStorage.setItem(dataKey, JSON.stringify(data));
+		} catch (error) {
+			console.log(error);
+			Alert.alert("Não foi possível salvar as informações");
+		}
 	}
+	useEffect(() => {
+		async function loadData() {
+			const data = await AsyncStorage.getItem(dataKey);
+			console.log(JSON.parse(data!));
+		}
+		loadData();
+	}, []);
 
 	return (
 		<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
