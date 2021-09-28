@@ -28,13 +28,15 @@ interface FormData {
 	amount: string;
 }
 
-const schema = Yup.object().shape({
-	name: Yup.string().required("Nome é obrigatório"),
-	amount: Yup.number()
-		.typeError("Informe um valor numérico")
-		.required("Valor é obrigatório")
-		.positive("O valor não pode ser nagativo"),
-});
+const schema = Yup.object()
+	.shape({
+		name: Yup.string().required("Nome é obrigatório"),
+		amount: Yup.number()
+			.typeError("Informe um valor numérico")
+			.required("Valor é obrigatório")
+			.positive("O valor não pode ser nagativo"),
+	})
+	.defined();
 
 export const Register = () => {
 	const [transactionType, setTransactionType] = useState("up");
@@ -84,23 +86,18 @@ export const Register = () => {
 				<Form>
 					<Fields>
 						<InputForm
-							//@ts-expect-error
 							control={control}
 							name="name"
 							placeholder="Nome"
 							autoCapitalize="sentences"
 							autoCorrect={false}
-							//@ts-expect-error
-
 							error={errors.name && errors.name.message}
 						/>
 						<InputForm
-							//@ts-expect-error
 							control={control}
 							name="amount"
 							placeholder="Preço"
 							keyboardType="numeric"
-							//@ts-expect-error
 							error={errors.amount && errors.name.message}
 						/>
 						<TransactionsTypes>

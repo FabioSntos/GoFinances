@@ -1,8 +1,11 @@
+import "react-native-gesture-handler";
 import React from "react";
 
 import AppLoading from "expo-app-loading";
 
 import { ThemeProvider } from "styled-components/native";
+
+import { NavigationContainer } from "@react-navigation/native";
 
 import {
 	useFonts,
@@ -13,10 +16,9 @@ import {
 
 import theme from "./src/global/styles/theme";
 
-import { Dashboard } from "./src/pages/Dashboard";
-import { StatusBar } from "expo-status-bar";
-import { Register } from "./src/pages/Register";
-import { CategorySelect } from "./src/pages/CategorySelect";
+import { StatusBar } from "react-native";
+
+import { AppRoutes } from "./src/routes/app.routes";
 
 export default function App() {
 	const [fonstLoaded] = useFonts({
@@ -30,10 +32,13 @@ export default function App() {
 	}
 	return (
 		<ThemeProvider theme={theme}>
-			<StatusBar backgroundColor={theme.colors.primary} style="light" />
-			{/* <Dashboard /> */}
-			<Register />
-			{/* <CategorySelect /> */}
+			<StatusBar
+				barStyle="light-content"
+				backgroundColor={theme.colors.primary}
+			/>
+			<NavigationContainer>
+				<AppRoutes />
+			</NavigationContainer>
 		</ThemeProvider>
 	);
 }
