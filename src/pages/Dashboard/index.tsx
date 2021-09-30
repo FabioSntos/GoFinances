@@ -1,3 +1,4 @@
+import { useState, useEffect, useCallback } from "react";
 import React from "react";
 
 import { HighlightCard } from "../../components/HighlightCard";
@@ -22,40 +23,58 @@ import {
 	TransactionList,
 	LogoutButton,
 } from "./styles";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useFocusEffect } from "@react-navigation/core";
 
 export interface DataListProps extends TransactionCardProps {
 	id: string;
 }
 
 export const Dashboard = () => {
-	const data: DataListProps[] = [
-		{
-			id: "1",
-			type: "positive",
-			title: "Salário Mensal",
-			amount: "R$ 3.450,00",
-			category: { name: "emprego", icon: "dollar-sign" },
-			date: "13/04/2021",
-		},
-		{
-			id: "2",
-			type: "negative",
+	const [data, setData] = useState<DataListProps[]>([]);
 
-			title: "hamburguer artesanal",
-			amount: "R$ 65, 97",
-			category: { name: "Alimentação", icon: "coffee" },
-			date: "22/09/2021",
-		},
-		{
-			id: "3",
-			type: "negative",
+	async function loadTransactions() {
+		const dataKey = "@gofinances:transactions";
+		const responseTransaction = await AsyncStorage.getItem(dataKey);
 
-			title: "Aluguel do apartamento",
-			amount: "R$ 1.350,00",
-			category: { name: "casa", icon: "shopping-bag" },
-			date: "13/04/2021",
-		},
-	];
+		const transactions = responseTransaction
+			? JSON.parse(responseTransaction)
+			: [];
+
+		const transactionsFormatted: DataListProps[] = transactions.map(
+			(item: DataListProps) => {
+				const amount = Number(item.amount).toLocaleString("pt-BR", {
+					style: "currency",
+					currency: "BRL",
+				});
+
+				const date = Intl.DateTimeFormat("pt-BR", {
+					day: "2-digit",
+					month: "2-digit",
+					year: "2-digit",
+				}).format(new Date(item.date));
+
+				return {
+					id: item.id,
+					name: item.name,
+					amount,
+					type: item.type,
+					category: item.category,
+					date,
+				};
+			}
+		);
+		setData(transactionsFormatted);
+	}
+	useEffect(() => {
+		loadTransactions();
+	}, []);
+
+	useFocusEffect(
+		useCallback(() => {
+			loadTransactions();
+		}, [])
+	);
 
 	return (
 		<Container>
